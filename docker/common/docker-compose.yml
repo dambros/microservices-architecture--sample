@@ -1,0 +1,233 @@
+version: '2'
+
+networks:
+  elk:
+    driver: bridge
+
+services:
+
+#########################
+#                       #
+#    Infrastructure     #
+#                       #
+#########################
+
+  db_auth:
+    image: postgres:9.5
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "p0stgr@s"
+      POSTGRES_DB: "bran"
+    networks:
+      - elk
+
+  db_licensing:
+    image: postgres:9.5
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "p0stgr@s"
+      POSTGRES_DB: "bran"
+    networks:
+      - elk
+
+  db_organization:
+    image: postgres:9.5
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "p0stgr@s"
+      POSTGRES_DB: "bran"
+    networks:
+      - elk
+
+  redis:
+    image: redis:alpine
+    ports:
+      - 6379:6379
+    networks:
+      - elk
+
+  kafkaserver:
+    image: spotify/kafka
+    hostname: kafkaserver
+    ports:
+      - 2181:2181
+      - 9092:9092
+    networks:
+      - elk
+
+#########################
+#                       #
+#       ELK STACK       #
+#                       #
+#########################
+
+  elasticsearch:
+    image: elasticsearch:alpine
+    volumes:
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - elk
+
+  logstash:
+    image: logstash:alpine
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./logstash/pipeline:/usr/share/logstash/pipeline
+    ports:
+      - "5000:5000"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    image: kibana
+    volumes:
+      - ./kibana/config/:/usr/share/kibana/config:ro
+    ports:
+      - "5601:5601"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+
+  logspout:
+    image: bekt/logspout-logstash
+    environment:
+      ROUTE_URIS: logstash://logstash:5000
+      RETRY_SEND: 1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - elk
+    depends_on:
+      - logstash
+
+#########################
+#                       #
+#    Microservices      #
+#                       #
+#########################
+
+  eurekaserver:
+     image: dambros/bran-eurekasvr:1.0
+     ports:
+         - "8761:8761"
+     networks:
+         - elk
+
+  configserver:
+      image: dambros/bran-configsvr:1.0
+      ports:
+        - "8888:8888"
+      environment:
+         EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+         EUREKASERVER_PORT: "8761"
+         ENCRYPT_KEY:       "IMSYMMETRIC"
+      networks:
+        - elk
+
+  zipkin:
+      image: dambros/bran-zipkinsvr:1.0
+      ports:
+        - "9411:9411"
+      environment:
+        PROFILE: "default"
+        SERVER_PORT: "9411"
+        EUREKASERVER_PORT:   "8761"
+        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+      networks:
+        - elk
+
+  zuulserver:
+      image: dambros/bran-zuulsvr:1.0
+      ports:
+        - "8080:8080"
+      environment:
+        PROFILE: "default"
+        SERVER_PORT: "8080"
+        CONFIGSERVER_URI: "http://configserver:8888"
+        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+        ZIPKIN_URI: "http://zipkin:9411"
+        EUREKASERVER_PORT:   "8761"
+        CONFIGSERVER_PORT:   "8888"
+        ZIPKIN_PORT:         "9411"
+      networks:
+        - elk
+
+  authenticationservice:
+    image: dambros/bran-authentication-service:1.0
+    ports:
+      - "8901:8901"
+    environment:
+      PROFILE: "default"
+      SERVER_PORT: "8901"
+      DB_PORT:     "5432"
+      EUREKASERVER_PORT: "8761"
+      CONFIGSERVER_PORT: "8888"
+      ZUULSERVER_PORT:     "8080"
+      ZIPKIN_PORT:         "9411"
+      CONFIGSERVER_URI: "http://configserver:8888"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+      ZIPKIN_URI: "http://zipkin:9411"
+      ENCRYPT_KEY:       "IMSYMMETRIC"
+    networks:
+      - elk
+
+  licensingservice:
+    image: dambros/bran-licensing-service:1.0
+    ports:
+      - "8089:8089"
+    environment:
+      PROFILE: "default"
+      SERVER_PORT: "8089"
+      DB_PORT: "5432"
+      CONFIGSERVER_URI: "http://configserver:8888"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+      ZIPKIN_URI: "http://zipkin:9411"
+      KAFKASERVER_URI: "kafkaserver"
+      ZKSERVER_URI: "kafkaserver"
+      KAFKASERVER_PORT:    "2181"
+      EUREKASERVER_PORT:   "8761"
+      CONFIGSERVER_PORT:   "8888"
+      ZUULSERVER_PORT:     "8080"
+      REDIS_PORT:          "6379"
+      ZIPKIN_PORT:         "9411"
+      ENCRYPT_KEY:       "IMSYMMETRIC"
+    networks:
+      - elk
+
+  organizationservice:
+    image: dambros/bran-organization-service:1.0
+    ports:
+      - "8085:8085"
+    environment:
+      PROFILE: "default"
+      SERVER_PORT: "8085"
+      CONFIGSERVER_URI: "http://configserver:8888"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+      ZIPKIN_URI: "http://zipkin:9411"
+      KAFKASERVER_URI: "kafkaserver"
+      ZKSERVER_URI: "kafkaserver"
+      KAFKASERVER_PORT:    "2181"
+      DB_PORT: "5432"
+      EUREKASERVER_PORT:   "8761"
+      CONFIGSERVER_PORT:   "8888"
+      ZUULSERVER_PORT:     "8080"
+      ZIPKIN_PORT:         "9411"
+      ENCRYPT_KEY:       "IMSYMMETRIC"
+    networks:
+      - elk

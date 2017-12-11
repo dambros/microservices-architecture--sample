@@ -1,0 +1,17 @@
+server:
+  port: 8888
+
+encrypt:
+  key: IMSYMMETRIC
+
+spring:
+  cloud:
+    config:
+      discovery:
+        enabled: true
+      server:
+        encrypt:
+          enabled: false
+        git:
+          uri: https://github.com/dambros/bran-configs/
+          searchPaths: licensingservice,organizationservice,zuulservice,authenticationservice

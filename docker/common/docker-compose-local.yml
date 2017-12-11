@@ -1,0 +1,105 @@
+version: '2'
+
+networks:
+  elk:
+    driver: bridge
+
+services:
+
+#########################
+#                       #
+#    Infrastructure     #
+#                       #
+#########################
+
+  db_auth:
+    image: postgres:9.5
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "p0stgr@s"
+      POSTGRES_DB: "bran"
+    networks:
+      - elk
+
+  db_licensing:
+    image: postgres:9.5
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "p0stgr@s"
+      POSTGRES_DB: "bran"
+    networks:
+      - elk
+
+  db_organization:
+    image: postgres:9.5
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "p0stgr@s"
+      POSTGRES_DB: "bran"
+    networks:
+      - elk
+
+  redis:
+    image: redis:alpine
+    ports:
+      - 6379:6379
+    networks:
+      - elk
+
+  kafkaserver:
+    image: spotify/kafka
+    hostname: kafkaserver
+    ports:
+      - 2181:2181
+      - 9092:9092
+    networks:
+      - elk
+
+#########################
+#                       #
+#       ELK STACK       #
+#                       #
+#########################
+
+  elasticsearch:
+    image: elasticsearch:alpine
+    volumes:
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - elk
+
+  logstash:
+    image: logstash:alpine
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./logstash/pipeline:/usr/share/logstash/pipeline
+    ports:
+      - "5000:5000"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    image: kibana
+    volumes:
+      - ./kibana/config/:/usr/share/kibana/config:ro
+    ports:
+      - "5601:5601"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch

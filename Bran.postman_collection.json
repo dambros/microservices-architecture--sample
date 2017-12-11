@@ -1,0 +1,289 @@
+{
+	"info": {
+		"name": "Bran",
+		"_postman_id": "98789b84-a5d9-413b-f282-3845ac28e696",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication::Login",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "bran",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "thisissecret",
+							"type": "string"
+						},
+						{
+							"key": "saveHelperData",
+							"type": "any"
+						},
+						{
+							"key": "showPassword",
+							"value": false,
+							"type": "boolean"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "webclient",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "mario.dambros",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password2",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/auth/oauth/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"auth",
+						"oauth",
+						"token"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Licensing::GetLicense",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmdhbml6YXRpb25JZCI6IjQyZDNkNGY1LTlmMzMtNDJmNC04YWNhLWI3NTE5ZDZhZjFiYiIsInVzZXJfbmFtZSI6Im1hcmlvLmRhbWJyb3MiLCJzY29wZSI6WyJ3ZWJjbGllbnQiXSwiZXhwIjoxNTEzMDUxMDYzLCJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIiwiUk9MRV9VU0VSIl0sImp0aSI6ImYzOTE5MTE0LTkzZjMtNDhkMS1hYWZjLTQwYWUyOWM5M2M3MyIsImNsaWVudF9pZCI6ImJyYW4ifQ.stdbfUg-YahZHHmNuKs--kZ6Az7hEVqNtMo8Ln10CcU"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/api/licensing/v1/organizations/e254f8c-c442-4ebe-a82a-e2fc1d1ff78a/licenses/t9876f8c-c338-4abc-zf6a-ttt1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"licensing",
+						"v1",
+						"organizations",
+						"e254f8c-c442-4ebe-a82a-e2fc1d1ff78a",
+						"licenses",
+						"t9876f8c-c338-4abc-zf6a-ttt1"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Licensing::GetLicenses",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmdhbml6YXRpb25JZCI6IjQyZDNkNGY1LTlmMzMtNDJmNC04YWNhLWI3NTE5ZDZhZjFiYiIsInVzZXJfbmFtZSI6Im1hcmlvLmRhbWJyb3MiLCJzY29wZSI6WyJ3ZWJjbGllbnQiXSwiZXhwIjoxNTEzMDUxMDYzLCJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIiwiUk9MRV9VU0VSIl0sImp0aSI6ImYzOTE5MTE0LTkzZjMtNDhkMS1hYWZjLTQwYWUyOWM5M2M3MyIsImNsaWVudF9pZCI6ImJyYW4ifQ.stdbfUg-YahZHHmNuKs--kZ6Az7hEVqNtMo8Ln10CcU"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/api/licensing/v1/organizations/e254f8c-c442-4ebe-a82a-e2fc1d1ff78a/licenses/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"licensing",
+						"v1",
+						"organizations",
+						"e254f8c-c442-4ebe-a82a-e2fc1d1ff78a",
+						"licenses",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Organization::GetOrganization",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmdhbml6YXRpb25JZCI6IjQyZDNkNGY1LTlmMzMtNDJmNC04YWNhLWI3NTE5ZDZhZjFiYiIsInVzZXJfbmFtZSI6Im1hcmlvLmRhbWJyb3MiLCJzY29wZSI6WyJ3ZWJjbGllbnQiXSwiZXhwIjoxNTEzMDUxMDYzLCJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIiwiUk9MRV9VU0VSIl0sImp0aSI6ImYzOTE5MTE0LTkzZjMtNDhkMS1hYWZjLTQwYWUyOWM5M2M3MyIsImNsaWVudF9pZCI6ImJyYW4ifQ.stdbfUg-YahZHHmNuKs--kZ6Az7hEVqNtMo8Ln10CcU"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/api/organization/v1/organizations/e254f8c-c442-4ebe-a82a-e2fc1d1ff78a/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"organization",
+						"v1",
+						"organizations",
+						"e254f8c-c442-4ebe-a82a-e2fc1d1ff78a",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Organization::UpdateOrganization",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmdhbml6YXRpb25JZCI6IjQyZDNkNGY1LTlmMzMtNDJmNC04YWNhLWI3NTE5ZDZhZjFiYiIsInVzZXJfbmFtZSI6Im1hcmlvLmRhbWJyb3MiLCJzY29wZSI6WyJ3ZWJjbGllbnQiXSwiZXhwIjoxNTEzMDUxMDYzLCJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIiwiUk9MRV9VU0VSIl0sImp0aSI6ImYzOTE5MTE0LTkzZjMtNDhkMS1hYWZjLTQwYWUyOWM5M2M3MyIsImNsaWVudF9pZCI6ImJyYW4ifQ.stdbfUg-YahZHHmNuKs--kZ6Az7hEVqNtMo8Ln10CcU"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"e254f8c-c442-4ebe-a82a-e2fc1d1ff78a\",\n    \"name\": \"customer-crm-co\",\n    \"contactName\": \"Mark Balster XXXXXX\",\n    \"contactEmail\": \"mark.balster@custcrmco.com\",\n    \"contactPhone\": \"823-555-1212\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/organization/v1/organizations/e254f8c-c442-4ebe-a82a-e2fc1d1ff78a/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"organization",
+						"v1",
+						"organizations",
+						"e254f8c-c442-4ebe-a82a-e2fc1d1ff78a",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Organization::NewOrganization",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmdhbml6YXRpb25JZCI6IjQyZDNkNGY1LTlmMzMtNDJmNC04YWNhLWI3NTE5ZDZhZjFiYiIsInVzZXJfbmFtZSI6Im1hcmlvLmRhbWJyb3MiLCJzY29wZSI6WyJ3ZWJjbGllbnQiXSwiZXhwIjoxNTEzMDUxMDYzLCJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIiwiUk9MRV9VU0VSIl0sImp0aSI6ImYzOTE5MTE0LTkzZjMtNDhkMS1hYWZjLTQwYWUyOWM5M2M3MyIsImNsaWVudF9pZCI6ImJyYW4ifQ.stdbfUg-YahZHHmNuKs--kZ6Az7hEVqNtMo8Ln10CcU"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"test-org\",\n    \"contactName\": \"Mario D ambros\",\n    \"contactEmail\": \"mario@testorg.com\",\n    \"contactPhone\": \"123-456-789\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/organization/v1/organizations/e254f8c-c442-4ebe-a82a-e2fc1d1ff78a/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"organization",
+						"v1",
+						"organizations",
+						"e254f8c-c442-4ebe-a82a-e2fc1d1ff78a",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Organization::DeleteOrganization",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmdhbml6YXRpb25JZCI6IjQyZDNkNGY1LTlmMzMtNDJmNC04YWNhLWI3NTE5ZDZhZjFiYiIsInVzZXJfbmFtZSI6Im1hcmlvLmRhbWJyb3MiLCJzY29wZSI6WyJ3ZWJjbGllbnQiXSwiZXhwIjoxNTEzMDUxMDYzLCJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIiwiUk9MRV9VU0VSIl0sImp0aSI6ImYzOTE5MTE0LTkzZjMtNDhkMS1hYWZjLTQwYWUyOWM5M2M3MyIsImNsaWVudF9pZCI6ImJyYW4ifQ.stdbfUg-YahZHHmNuKs--kZ6Az7hEVqNtMo8Ln10CcU"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/api/organization/v1/organizations/f3efa528-e61e-45f4-a09f-80c9b60183d9/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"organization",
+						"v1",
+						"organizations",
+						"f3efa528-e61e-45f4-a09f-80c9b60183d9",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

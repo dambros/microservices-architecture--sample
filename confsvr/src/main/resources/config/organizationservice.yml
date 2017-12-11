@@ -1,0 +1,28 @@
+spring.jpa.database: "POSTGRESQL"
+spring.datasource.platform: "postgres"
+spring.jpa.show-sql: "true"
+spring.database.driverClassName: "org.postgresql.Driver"
+spring.datasource.url: "jdbc:postgresql://localhost:5434/bran"
+spring.datasource.username: "postgres"
+spring.datasource.password: "{cipher}4788dfe1ccbe6485934aec2ffeddb06163ea3d616df5fd75be96aadd4df1da91"
+spring.datasource.testWhileIdle: "true"
+spring.datasource.validationQuery: "SELECT 1"
+spring.jpa.properties.hibernate.dialect: "org.hibernate.dialect.PostgreSQLDialect"
+signing.key: "345345fsdfsf5345"
+
+spring.zipkin.baseUrl: http://localhost:9411
+spring.cloud.stream.bindings.output.destination: orgChangeTopic
+spring.cloud.stream.bindings.output.content-type: application/json
+spring.cloud.stream.bindings.kafka.binder.zkNodes: localhost
+spring.cloud.stream.bindings.kafka.binder.brokers: localhost
+
+logging.level.com.netflix: WARN
+logging.level.org.springframework.web: WARN
+logging.level.br.com.dataeasy: DEBUG
+
+eureka.instance.preferIpAddress: true
+eureka.client.registerWithEureka: true
+eureka.client.fetchRegistry: true
+eureka.client.serviceUrl.defaultZone: http://localhost:8761/eureka/
+
+server.port: 8081
