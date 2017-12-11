@@ -1,6 +1,6 @@
 # Bran
 
-O objetivo desse repositório é exemplificar, bem como, explicar os pontos mais importantes da arquitetura pensada para o projeto Bran.
+O objetivo desse repositório é exemplificar, bem como explicar os pontos mais importantes da arquitetura pensada para o projeto Bran.
 
 ## Arquitura software
 
@@ -11,11 +11,11 @@ Conforme pautado nas reuniões anteriores, o Bran possui algumas premissas, dent
 - Blockchain
 - API oriented
 
-Sendo assim, continuar usando o modelo de desenvolvimento monolítico e single tenant que estávamos acostumado com a Dataeasy não é algo que atende tais demanadas e por isso estou propondo uma nova abordagem no desenvolvimento do Bran.
+Sendo assim, continuar usando o modelo de desenvolvimento monolítico e single-tenant que estávamos acostumado com a Dataeasy não é algo que atende tais demanadas e por isso estou propondo uma nova abordagem no desenvolvimento do Bran.
 
-Primeiramente e provavelmente a maior mudança é saírmos do padrão monolítico e migrarmos para uma arquiterura de software distribuída, ganhando com isso, entre outras coisas, a capacidade sermos elásticos que não possuímos atualmente.
+Primeiramente e provavelmente a maior mudança é saírmos do padrão monolítico e migrarmos para uma arquiterura de software distribuída, ganhando com isso, entre outras coisas, a capacidade sermos elásticos.
 
-Adotando um arquitetura focada em microserviços sem dúvida impõe novos desafios que atualmente não enfrentamos, mas em contrapartida permite que trabalhemos de forma autônoma entre a equipe e possibilite de sejamos escaláveis, evitando dores como hoje acontece com o Easysearch e o Solr.
+Adotando um arquitetura focada em microserviços sem dúvida impõe novos desafios que atualmente não estamos familiarizados, mas em contrapartida permite que trabalhemos de forma autônoma entre a equipe e possibilite de sejamos escaláveis, evitando dores como hoje acontece com o Easysearch e o Solr.
 
 Com todo esses pontos em mente e considerando o expertise da equipe em Java, tentei utilizar ao máximo as ferramentas e patterns mais battle-tested do mercado visando construir uma arquitetura onde, apesar de inicialmente parecer desnecessariamente complexa, tentasse abordar os pontos mais comuns de um desenvolvimento distribuído.
 
@@ -103,7 +103,7 @@ docker-compose -f docker-compose-local.yml up -d
     - licensing-service
     - organization-service
 
-Obs.: Por padrão, o microserviço configsvr estará apontando para configs vindas de um repositório do [Github](https://github.com/dambros/bran-configs). Caso esteja utilizando os microserviços fora do docker, é necessário utilizar as configs locais, bastando definir o profile ```native``` na hora que iniciar esse servico, ```mvn spring-boot:run -Dspring.profiles.active=native```. Se preferir utilizar as configs no Github para esse cenário, será necessário fazer um proxy das nomenclaturas do docker-compose para localhost no ser arquivo /etc/hosts.
+Obs.: Por padrão, o microserviço configsvr estará apontando para configs vindas de um repositório do [Github](https://github.com/dambros/bran-configs). Caso esteja utilizando os microserviços fora do docker, é necessário utilizar as configs locais, bastando definir o profile ```native``` na hora que iniciar esse servico, ```mvn spring-boot:run -Dspring.profiles.active=native```. Se preferir utilizar as configs no Github para esse cenário, será necessário fazer um proxy das nomenclaturas do docker-compose para localhost no seu arquivo /etc/hosts.
 
 ## Acessando a API REST e dados de acesso dos serviços
 
